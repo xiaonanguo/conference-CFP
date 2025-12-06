@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Deadlines & Locations</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📅 Conference Deadlines & Locations</h1>
+            <p class="subtitle">Stay updated with upcoming conference submission deadlines</p>
+        </header>
+
+        <div class="controls">
+            <div class="filter-group">
+                <label for="searchInput">Search:</label>
+                <input type="text" id="searchInput" placeholder="Search by name, location, or field...">
+            </div>
+            <div class="filter-group">
+                <label for="sortSelect">Sort by:</label>
+                <select id="sortSelect">
+                    <option value="deadline">Deadline (Earliest First)</option>
+                    <option value="deadline-desc">Deadline (Latest First)</option>
+                    <option value="name">Name (A-Z)</option>
+                    <option value="location">Location</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="statusFilter">Status:</label>
+                <select id="statusFilter">
+                    <option value="all">All</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="past">Past</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="conferenceList" class="conference-list">
+            <!-- Conferences will be dynamically loaded here -->
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <p>No conferences found matching your criteria.</p>
+        </div>
+    </div>
+
+    <script src="conferences.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
