@@ -1,6 +1,16 @@
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     renderConferences(conferences);
+
+    const verifiedElement = document.getElementById('dataVerified');
+    if (verifiedElement && typeof conferenceDataLastVerified !== 'undefined') {
+        const verifiedDate = new Date(conferenceDataLastVerified + 'T00:00:00');
+        verifiedElement.textContent = 'Conference information last verified: ' + verifiedDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
     
     // Add event listeners
     document.getElementById('searchInput').addEventListener('input', handleFilter);
@@ -139,11 +149,13 @@ function createConferenceCard(conference) {
         `;
     }
     
-    const formattedConferenceDate = new Date(conference.conferenceDate).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    const formattedConferenceDate = conference.conferenceDate
+        ? new Date(conference.conferenceDate + 'T00:00:00').toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        })
+        : (conference.conferenceDateText || 'To be announced');
     
     return `
         <div class="conference-card ${cardClass}">
