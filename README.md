@@ -2,6 +2,10 @@
 
 A modern, responsive webpage to track conference submission deadlines and locations.
 
+## Data currency
+
+Conference information was last verified against official conference or sponsoring-society sources on **August 24, 2026**. The newest officially announced edition is used for each conference. When a future edition or its CFP has not been published, the latest available official edition remains listed; unannounced dates stay marked as TBA rather than being estimated.
+
 ## Features
 
 - 📅 View conference submission deadlines
@@ -21,13 +25,20 @@ A modern, responsive webpage to track conference submission deadlines and locati
 
 ## Customization
 
-To add or modify conferences, edit the `conferences.js` file. Each conference object should have:
+To add or modify conferences, edit the `conferences.js` file. Each conference object can have:
+
 - `name`: Conference name
 - `field`: Research field/area
-- `deadline`: Submission deadline (YYYY-MM-DD format)
+- `submissionDeadline`: Full-paper submission deadline (YYYY-MM-DD)
+- `abstractDeadline`: Optional abstract-registration deadline (YYYY-MM-DD)
+- `registrationDeadline`: Optional attendee-registration deadline (YYYY-MM-DD)
 - `location`: Conference location
-- `conferenceDate`: Conference start date (YYYY-MM-DD format)
-- `website`: Conference website URL
+- `conferenceDate`: Conference start date (YYYY-MM-DD), or `null` if not announced
+- `conferenceDateText`: Optional display text when only a month or partial date is known
+- `website`: Official conference website URL
+- `cfpLink`: Official call-for-papers URL
+
+Update `conferenceDataLastVerified` whenever the conference data is rechecked.
 
 ## Files
 
@@ -35,4 +46,3 @@ To add or modify conferences, edit the `conferences.js` file. Each conference ob
 - `styles.css` - Styling and layout
 - `script.js` - JavaScript functionality
 - `conferences.js` - Conference data
-
