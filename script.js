@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('statusFilter').addEventListener('change', handleFilter);
 });
 
+function parseLocalDate(dateString) {
+    return new Date(dateString + 'T00:00:00');
+}
+
 function renderConferences(conferencesToRender) {
     const container = document.getElementById('conferenceList');
     const emptyState = document.getElementById('emptyState');
@@ -43,7 +47,7 @@ function createConferenceCard(conference) {
     let cardClass = '';
     
     if (conference.submissionDeadline) {
-        submissionDeadlineDate = new Date(conference.submissionDeadline);
+        submissionDeadlineDate = parseLocalDate(conference.submissionDeadline);
         const daysUntilDeadline = Math.ceil((submissionDeadlineDate - today) / (1000 * 60 * 60 * 24));
         
         if (daysUntilDeadline < 0) {
@@ -65,7 +69,7 @@ function createConferenceCard(conference) {
     // Format abstract deadline (if exists)
     let abstractDeadlineHTML = '';
     if (conference.abstractDeadline) {
-        const abstractDeadlineDate = new Date(conference.abstractDeadline);
+        const abstractDeadlineDate = parseLocalDate(conference.abstractDeadline);
         const formattedAbstractDeadline = abstractDeadlineDate.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -122,7 +126,7 @@ function createConferenceCard(conference) {
     // Format registration deadline
     let registrationDeadlineHTML = '';
     if (conference.registrationDeadline) {
-        const registrationDeadlineDate = new Date(conference.registrationDeadline);
+        const registrationDeadlineDate = parseLocalDate(conference.registrationDeadline);
         const formattedRegistrationDeadline = registrationDeadlineDate.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -209,8 +213,8 @@ function handleFilter() {
         if (statusFilter === 'all') return true;
         
         // Use submission deadline for filtering, fallback to registration deadline if no submission deadline
-        const deadlineDate = conference.submissionDeadline ? new Date(conference.submissionDeadline) : 
-                            (conference.registrationDeadline ? new Date(conference.registrationDeadline) : null);
+        const deadlineDate = conference.submissionDeadline ? parseLocalDate(conference.submissionDeadline) : 
+                            (conference.registrationDeadline ? parseLocalDate(conference.registrationDeadline) : null);
         
         if (!deadlineDate) return statusFilter === 'all'; // If no deadline, only show in 'all'
         
@@ -230,16 +234,16 @@ function handleFilter() {
     filtered.sort((a, b) => {
         switch(sortBy) {
             case 'deadline':
-                const deadlineA = a.submissionDeadline ? new Date(a.submissionDeadline) : 
-                                 (a.registrationDeadline ? new Date(a.registrationDeadline) : new Date('9999-12-31'));
-                const deadlineB = b.submissionDeadline ? new Date(b.submissionDeadline) : 
-                                 (b.registrationDeadline ? new Date(b.registrationDeadline) : new Date('9999-12-31'));
+                const deadlineA = a.submissionDeadline ? parseLocalDate(a.submissionDeadline) : 
+                                 (a.registrationDeadline ? parseLocalDate(a.registrationDeadline) : new Date('9999-12-31'));
+                const deadlineB = b.submissionDeadline ? parseLocalDate(b.submissionDeadline) : 
+                                 (b.registrationDeadline ? parseLocalDate(b.registrationDeadline) : new Date('9999-12-31'));
                 return deadlineA - deadlineB;
             case 'deadline-desc':
-                const deadlineADesc = a.submissionDeadline ? new Date(a.submissionDeadline) : 
-                                     (a.registrationDeadline ? new Date(a.registrationDeadline) : new Date('0001-01-01'));
-                const deadlineBDesc = b.submissionDeadline ? new Date(b.submissionDeadline) : 
-                                     (b.registrationDeadline ? new Date(b.registrationDeadline) : new Date('0001-01-01'));
+                const deadlineADesc = a.submissionDeadline ? parseLocalDate(a.submissionDeadline) : 
+                                     (a.registrationDeadline ? parseLocalDate(a.registrationDeadline) : new Date('0001-01-01'));
+                const deadlineBDesc = b.submissionDeadline ? parseLocalDate(b.submissionDeadline) : 
+                                     (b.registrationDeadline ? parseLocalDate(b.registrationDeadline) : new Date('0001-01-01'));
                 return deadlineBDesc - deadlineADesc;
             case 'name':
                 return a.name.localeCompare(b.name);
@@ -252,4 +256,5 @@ function handleFilter() {
     
     renderConferences(filtered);
 }
+
 
